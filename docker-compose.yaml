@@ -1,0 +1,14 @@
+services:
+  app:
+    container_name: spring-app
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+      - ~/k3s.yaml:/root/.kube/config
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+      - ~/k3s-base.qcow2:/k3s-base.qcow2
+    ports:
+      - "8080:8080"

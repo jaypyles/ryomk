@@ -5,11 +5,18 @@ services:
       context: .
     volumes:
       - .:/app
-      - ~/.m2:/root/.m2
       - ~/k3s.yaml:/root/.kube/config
       - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
       - ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro
       - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
       - ~/k3s-base.qcow2:/k3s-base.qcow2
+    environment:
+      - LIBVIRT_URI=qemu+ssh://jayden@192.168.50.201/system
+      - VM_BASE_IMAGE_PATH=/k3s-base.qcow2
+      - VM_IMAGES_DIRECTORY=/var/lib/libvirt/images
+      - K3S_MASTER_IP=192.168.50.34
+      - K3S_MASTER_VERSION=v1.30.5+k3s1
+      - K3S_MASTER_NETWORK=kube-net
+      - K3S_MASTER_BRIDGE=br0
     ports:
       - "8080:8080"

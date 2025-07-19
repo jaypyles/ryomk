@@ -28,19 +28,6 @@ public class LibvirtConfig {
     public Connect libvirtConnect() throws Exception {
         logger.info("Attempting to connect to libvirt at: {}", libvirtUri);
 
-        // Debug: Check SSH key accessibility
-        try {
-            java.nio.file.Path sshKeyPath = java.nio.file.Paths.get("/root/.ssh/id_rsa");
-            if (java.nio.file.Files.exists(sshKeyPath)) {
-                logger.info("SSH key exists at: {}", sshKeyPath);
-                logger.info("SSH key readable: {}", java.nio.file.Files.isReadable(sshKeyPath));
-            } else {
-                logger.warn("SSH key not found at: {}", sshKeyPath);
-            }
-        } catch (Exception e) {
-            logger.error("Error checking SSH key: {}", e.getMessage());
-        }
-
         try {
             Connect connect = new Connect(libvirtUri);
             logger.info("Successfully connected to libvirt");

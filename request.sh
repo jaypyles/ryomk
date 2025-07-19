@@ -10,7 +10,7 @@ if [ "$1" = "1" ]; then
     --ip-address "192.168.50.89" \
     --gateway "192.168.50.1" \
     --system-user "jayden" \
-    --iso-path "/home/jayden/cloud-init/k3s-worker-4-cloud-init.iso"
+    --iso-path "/home/%s/cloud-init/%s-cloud-init.iso"
 
 elif [ "$1" = "2" ]; then
   echo "Deleting VM..."
@@ -38,7 +38,7 @@ elif [ "$1" = "6" ]; then
     --system-user "jayden" \
     --vcpu 2 \
     --memory 4096 \
-    --iso-path "/home/jayden/cloud-init/k3s-worker-4-cloud-init.iso"
+    --iso-path "/home/%s/cloud-init/%s-cloud-init.iso"
 
 elif [ "$1" = "7" ]; then
   echo "Deleting node..."

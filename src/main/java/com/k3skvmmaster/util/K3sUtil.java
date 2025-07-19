@@ -44,8 +44,8 @@ public class K3sUtil {
             String masterIp = k3sConfig.getMasterNodeIp();
 
             String command = String.format(
-                    "bash -c 'export K3S_URL=https://%s:6443 && export K3S_TOKEN=%s && curl -sfL https://get.k3s.io | sh -'",
-                    masterIp.trim(), token.trim());
+                    "bash -c 'export K3S_URL=https://%s:6443 && export K3S_TOKEN=%s && export INSTALL_K3S_VERSION=%s && curl -sfL https://get.k3s.io | sh -'",
+                    masterIp.trim(), token.trim(), k3sConfig.getMasterVersion());
 
             AutoCloseSshSession.SshCommandResult result = ssh.executeSshCommand(command, "join-cluster");
 

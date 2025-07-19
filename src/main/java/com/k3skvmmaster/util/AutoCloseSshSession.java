@@ -17,7 +17,6 @@ public class AutoCloseSshSession implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(AutoCloseSshSession.class);
 
-    private final String libvirtUri = "qemu+ssh://jayden@192.168.50.201/system";
     private final String baseImagePath = "/k3s-base.qcow2";
     private final String vmImagesDirectory = "/var/lib/libvirt/images";
     private final String privateKeyPath = "/root/.ssh/id_rsa";
@@ -25,18 +24,59 @@ public class AutoCloseSshSession implements AutoCloseable {
     private final Session session;
     private final ChannelSftp channel;
 
-    public AutoCloseSshSession()
-            throws JSchException {
+    private static final String DEFAULT_USERNAME = "jayden";
+    private static final String DEFAULT_HOST = "192.168.50.201";
+
+    public AutoCloseSshSession() throws JSchException {
+        this(DEFAULT_USERNAME, DEFAULT_HOST, false);
+    }
+
+    public AutoCloseSshSession(String username, String host) throws JSchException {
+        this(username, host, false);
+    }
+
+    public AutoCloseSshSession(String username, String host, Boolean usePassword) throws JSchException {
+        logger.info("Trying to connect to server: {}", host);
+
+        if (username == null || username.isEmpty()) {
+            username = DEFAULT_USERNAME;
+        }
+
+        if (host == null || host.isEmpty()) {
+            host = DEFAULT_HOST;
+        }
 
         JSch jsch = new JSch();
         jsch.addIdentity(privateKeyPath);
 
-        session = jsch.getSession(getUsernameFromUri(), getHostFromUri(), 22);
-        session.setConfig("StrictHostKeyChecking", "no");
-        session.connect();
+        try {
+            session = jsch.getSession(username.trim(), host.trim(), 22);
+            session.setConfig("StrictHostKeyChecking", "no");
 
-        channel = (ChannelSftp) session.openChannel("sftp");
-        channel.connect();
+            if (usePassword) {
+                session.setConfig("PreferredAuthentications", "password");
+                session.setPassword("ubuntu");
+            }
+
+            session.setTimeout(30000);
+            session.connect();
+
+            if (!session.isConnected()) {
+                throw new JSchException("SSH session failed to connect to " + host);
+            }
+
+            channel = (ChannelSftp) session.openChannel("sftp");
+            channel.connect();
+
+            if (!channel.isConnected()) {
+                throw new JSchException("SFTP channel failed to connect on " + host);
+            }
+
+            logger.info("SSH session and SFTP channel established with {}@{}", username, host);
+        } catch (Exception e) {
+            logger.error("Failed to establish SSH session: {}", e.getMessage(), e);
+            throw new JSchException("SSH session setup failed for " + username + "@" + host, e);
+        }
     }
 
     @Override
@@ -47,25 +87,6 @@ public class AutoCloseSshSession implements AutoCloseable {
         if (session != null && session.isConnected()) {
             session.disconnect();
         }
-    }
-
-    private String getHostFromUri() {
-        String[] parts = libvirtUri.split("@");
-        if (parts.length > 1) {
-            return parts[1].split("/")[0];
-        }
-        return "192.168.50.201"; // fallback
-    }
-
-    private String getUsernameFromUri() {
-        String[] parts = libvirtUri.split("://");
-        if (parts.length > 1) {
-            String[] userHost = parts[1].split("@");
-            if (userHost.length > 0) {
-                return userHost[0];
-            }
-        }
-        return "jayden"; // fallback
     }
 
     public Session getSession() {

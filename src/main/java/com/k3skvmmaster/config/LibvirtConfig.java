@@ -15,16 +15,16 @@ public class LibvirtConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(LibvirtConfig.class);
 
-    @Value("${libvirt.connection.uri:qemu:///system}")
+    @Value("${libvirt.connection.uri}")
     private String libvirtUri;
 
-    @Value("${vm.base.image.path:/k3s-base.qcow2}")
+    @Value("${vm.base.image.path}")
     private String baseImagePath;
 
-    @Value("${vm.images.directory:/var/lib/libvirt/images}")
+    @Value("${vm.images.directory}")
     private String vmImagesDirectory;
 
-    @Value("${ssh.private.key.path:/root/.ssh/id_rsa}")
+    @Value("${ssh.private.key.path}")
     private String privateKeyPath;
 
     @Bean

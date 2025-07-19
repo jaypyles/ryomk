@@ -28,7 +28,6 @@ elif [ "$1" = "5" ]; then
   echo "Joining node to cluster..."
   pdm run python -m cli cluster join --node-ip "192.168.50.89"
 
-
 elif [ "$1" = "6" ]; then
   echo "Creating node..."
   pdm run python -m cli cluster create \

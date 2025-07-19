@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Change to the CLI directory
-cd "$(dirname "$0")/cli" || exit 1
+cd "../cli" || exit 1
 
 if [ "$1" = "1" ]; then
   echo "Creating VM..."
-  pdm run python -m cli vm create \
+  pdm run ryomk vm create \
     --name "k3s-worker-4" \
     --ip-address "192.168.50.89" \
     --gateway "192.168.50.1" \
@@ -14,23 +14,23 @@ if [ "$1" = "1" ]; then
 
 elif [ "$1" = "2" ]; then
   echo "Deleting VM..."
-  pdm run python -m cli vm delete k3s-worker-4
+  pdm run ryomk vm delete k3s-worker-4
 
 elif [ "$1" = "3" ]; then
   echo "Listing VMs..."
-  pdm run python -m cli vm list
+  pdm run ryomk vm list
 
 elif [ "$1" = "4" ]; then
   echo "Getting join token..."
-  pdm run python -m cli cluster join-token
+  pdm run ryomk cluster join-token
 
 elif [ "$1" = "5" ]; then
   echo "Joining node to cluster..."
-  pdm run python -m cli cluster join --node-ip "192.168.50.89"
+  pdm run ryomk cluster join --node-ip "192.168.50.89"
 
 elif [ "$1" = "6" ]; then
   echo "Creating node..."
-  pdm run python -m cli cluster create \
+  pdm run ryomk cluster create \
     --name "k3s-worker-4" \
     --ip-address "192.168.50.89" \
     --gateway "192.168.50.1" \
@@ -41,7 +41,7 @@ elif [ "$1" = "6" ]; then
 
 elif [ "$1" = "7" ]; then
   echo "Deleting node..."
-  pdm run python -m cli cluster delete k3s-worker-4
+  pdm run ryomk cluster delete k3s-worker-4
 
 else
   echo "Usage: $0 [1|2|3|4|5|6|7]"
@@ -50,7 +50,7 @@ else
   echo "  3 = list VMs"
   echo "  4 = get join token"
   echo "  5 = join node to cluster"
-  echo "  6 = delete pod"
-  echo "  7 = update node"
+  echo "  6 = create node"
+  echo "  7 = delete node"
 fi
 

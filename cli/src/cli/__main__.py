@@ -1,5 +1,3 @@
-"""Main CLI application for the K3s KVM Master API."""
-
 # STL
 import json
 from typing import Optional
@@ -27,7 +25,7 @@ def print_json(data: dict) -> None:
 )
 @click.pass_context
 def cli(ctx: click.Context, base_url: str) -> None:
-    """K3s CLI tool for managing VMs and clusters."""
+    """CLI tool for managing the K3s-KVM Cluster"""
     ctx.ensure_object(dict)
     ctx.obj["client"] = K3sAPIClient(base_url)
 

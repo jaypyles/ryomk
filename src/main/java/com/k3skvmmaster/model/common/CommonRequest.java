@@ -4,5 +4,4 @@ import lombok.ToString;
 
 @ToString
 public class CommonRequest {
-
 }

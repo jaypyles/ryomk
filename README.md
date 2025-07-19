@@ -43,7 +43,7 @@ This project consists of two main components:
 ## 📋 Project Structure
 
 ```
-k3s-kvm-master-api/
+ryomk/
 ├── src/                    # Spring Boot application source
 │   ├── main/java/
 │   │   └── com/k3skvmmaster/

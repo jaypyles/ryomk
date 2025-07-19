@@ -115,34 +115,6 @@ class K3sAPIClient:
         )
         return response.json()
 
-    def delete_pod(self, pod_name: str) -> Dict[str, Any]:
-        """Delete a pod from the cluster.
-
-        Args:
-            pod_name: Name of the pod to delete
-
-        Returns:
-            API response data
-        """
-        response = self._make_request(
-            "DELETE", "/api/v1/clusters/pod", params={"podName": pod_name}
-        )
-        return response.json()
-
-    def update_node(self, node_data: NodeRequest) -> Dict[str, Any]:
-        """Update a node in the cluster.
-
-        Args:
-            node_data: Node configuration data
-
-        Returns:
-            API response data
-        """
-        response = self._make_request(
-            "PUT", "/api/v1/clusters/node", data=node_data.model_dump(by_alias=True)
-        )
-        return response.json()
-
     def create_node(self, node_data: NodeRequest) -> Dict[str, Any]:
         """Create a new node.
 

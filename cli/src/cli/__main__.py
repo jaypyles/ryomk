@@ -132,7 +132,7 @@ def create_vm(
     vcpu: int,
     memory: int,
 ) -> None:
-    """Create a new VM."""
+    """Create a new Node."""
     ctx = click.get_current_context()
     client: K3sAPIClient = ctx.obj["client"]
 
@@ -188,23 +188,6 @@ def join_cluster(node_ip: str) -> None:
         raise click.Abort()
 
 
-@cluster.command("delete-pod")
-@click.option("--pod-name", required=True, help="Name of the pod to delete")
-def delete_pod(pod_name: str) -> None:
-    """Delete a pod from the cluster."""
-    ctx = click.get_current_context()
-    client: K3sAPIClient = ctx.obj["client"]
-
-    try:
-        result = client.delete_pod(pod_name)
-        print_json(result)
-        click.echo("✅ Pod deleted successfully")
-
-    except Exception as e:
-        click.echo(f"❌ Failed to delete pod: {e}", err=True)
-        raise click.Abort()
-
-
 @cluster.command("delete")
 @click.argument("name")
 def delete_node(name: str) -> None:
@@ -219,41 +202,6 @@ def delete_node(name: str) -> None:
 
     except Exception as e:
         click.echo(f"❌ Failed to delete Node: {e}", err=True)
-        raise click.Abort()
-
-
-@cluster.command("update-node")
-@click.option("--name", required=True, help="Name of the node")
-@click.option("--ip-address", required=True, help="IP address of the node")
-@click.option("--gateway", required=True, help="Gateway IP address")
-@click.option("--system-user", required=True, help="System user for the node")
-@click.option("--iso-path", required=True, help="Path to cloud-init ISO file")
-def update_node(
-    name: str,
-    ip_address: str,
-    gateway: str,
-    system_user: str,
-    iso_path: str,
-) -> None:
-    """Update a node in the cluster."""
-    ctx = click.get_current_context()
-    client: K3sAPIClient = ctx.obj["client"]
-
-    try:
-        node_data = NodeRequest(
-            name=name,
-            ip_address=ip_address,
-            gateway=gateway,
-            system_user=system_user,
-            iso_path=iso_path,
-        )
-
-        result = client.update_node(node_data)
-        print_json(result)
-        click.echo("✅ Node updated successfully")
-
-    except Exception as e:
-        click.echo(f"❌ Failed to update node: {e}", err=True)
         raise click.Abort()
 
 

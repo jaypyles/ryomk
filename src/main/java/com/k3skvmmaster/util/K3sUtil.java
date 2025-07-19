@@ -14,9 +14,8 @@ public class K3sUtil {
 
     private final K3sConfig k3sConfig;
 
-    public K3sUtil(K3sConfig k3sConfig) {
+    public K3sUtil(K3sConfig k3sConfig) throws IOException {
         this.k3sConfig = k3sConfig;
-
     }
 
     public String getJoinToken() throws Exception {

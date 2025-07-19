@@ -1,0 +1,73 @@
+[project]
+name = "cli"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [{ name = "Jayden Pyles", email = "jpylesbusiness@gmail.com" }]
+dependencies = [
+    "click>=8.2.1",
+    "requests>=2.32.4",
+    "pydantic>=2.6.1",
+    "typing-extensions>=4.9.0",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+
+[project.scripts]
+k3s-cli = "cli.__main__:main"
+
+[tool.pdm]
+distribution = true
+
+[tool.pyright]
+include = ["cli/**/*.py"]
+exclude = [".venv"]
+
+[tool.uv]
+package = true
+
+# Type checking strictness
+typeCheckingMode = "strict"
+reportPrivateUsage = "error"
+reportMissingTypeStubs = "error"
+reportUntypedFunctionDecorator = "error"
+reportUntypedClassDecorator = "error"
+reportUntypedBaseClass = "error"
+reportInvalidTypeVarUse = "error"
+reportUnnecessaryTypeIgnoreComment = "information"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownParameterType = "none"
+
+# Additional checks
+reportImplicitStringConcatenation = "error"
+reportInvalidStringEscapeSequence = "error"
+reportMissingImports = "error"
+reportMissingModuleSource = "error"
+reportOptionalCall = "error"
+reportOptionalIterable = "error"
+reportOptionalMemberAccess = "error"
+reportOptionalOperand = "error"
+reportOptionalSubscript = "error"
+reportTypedDictNotRequiredAccess = "error"
+
+# Function return type checking
+reportIncompleteStub = "error"
+reportIncompatibleMethodOverride = "error"
+reportInvalidStubStatement = "error"
+reportInconsistentOverload = "error"
+
+# Misc settings
+pythonVersion = "3.12"
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+reportUnknownArgumentType = false
+
+[tool.isort]
+length_sort = true
+profile = "black"
+sections = ["STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+import_heading_stdlib = "STL"
+import_heading_thirdparty = "PDM"
+import_heading_firstparty = "LOCAL"
+import_heading_localfolder = "LOCAL"

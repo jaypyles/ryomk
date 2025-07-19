@@ -18,5 +18,25 @@
     "name": "ssh.private.key.path",
     "type": "java.lang.String",
     "description": "A description for 'ssh.private.key.path'"
+  },
+  {
+    "name": "k3s.master.ip",
+    "type": "java.lang.String",
+    "description": "A description for 'k3s.master.ip'"
+  },
+  {
+    "name": "k3s.master.version",
+    "type": "java.lang.String",
+    "description": "A description for 'k3s.master.version'"
+  },
+  {
+    "name": "k3s.master.network",
+    "type": "java.lang.String",
+    "description": "A description for 'k3s.master.network'"
+  },
+  {
+    "name": "k3s.master.bridge",
+    "type": "java.lang.String",
+    "description": "A description for 'k3s.master.bridge'"
   }
 ]}

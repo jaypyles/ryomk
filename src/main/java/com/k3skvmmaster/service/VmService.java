@@ -32,7 +32,7 @@ public class VmService {
     public VmResponse createVm(VmRequest request) throws Exception {
         // 1. Prepare disk image (copy base image and customize it)
         logger.info("Preparing disk image for VM: {}", request.getName());
-        sshUtil.prepareDiskImage(request.getName(), request.getName(), request.getRootPassword(), request.getSshKey());
+        sshUtil.prepareDiskImage(request.getName(), request.getName(), request.getRootPassword());
 
         // 2. Generate cloud-init files on remote system
         String cloudInitIsoPath = cloudInitUtil.createRemoteCloudInitIso(request);
@@ -84,6 +84,7 @@ public class VmService {
     }
 
     public void startVm(String vmName) {
+
         try {
             libvirtUtil.startDomain(vmName);
         } catch (LibvirtException e) {

@@ -76,7 +76,7 @@ public class SshUtil {
         }
     }
 
-    public String prepareDiskImage(String vmName, String hostname, String rootPassword, String sshKeyContent)
+    public String prepareDiskImage(String vmName, String hostname, String rootPassword)
             throws IOException {
 
         try (AutoCloseSshSession ssh = new AutoCloseSshSession()) {
@@ -102,6 +102,17 @@ public class SshUtil {
             channel.put(libvirtConfig.getBaseImagePath(), targetImagePath);
             logger.info("Successfully copied base image to remote host");
 
+            // Read SSH public key content
+            String sshKeyContent;
+
+            try {
+                sshKeyContent = new String(java.nio.file.Files.readAllBytes(
+                        java.nio.file.Paths.get("/root/.ssh/id_rsa.pub")), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                logger.error("Failed to read SSH public key: {}", e.getMessage(), e);
+                throw new IOException("Failed to read SSH public key", e);
+            }
+
             // Write SSH key content to temporary file on remote system
             String sshKeyPath = "/tmp/" + vmName + "-ssh-key.pub";
 
@@ -119,7 +130,7 @@ public class SshUtil {
 
             // Customize the image with virt-customize
             String customizeCommand = String.format(
-                    "virt-customize -a %s --hostname %s --root-password password:%s --ssh-inject 'root:file:%s'",
+                    "virt-customize -a %s --hostname %s --root-password password:%s --ssh-inject 'ubuntu:file:%s'",
                     targetImagePath, hostname, rootPassword, sshKeyPath);
 
             logger.info("Customizing disk image with command: {}", customizeCommand);

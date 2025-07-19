@@ -27,7 +27,6 @@ public class VmRequest {
     @NotBlank
     private String isoPath;
 
-    private String sshKey;
     private String rootPassword = "ubuntu";
     private String user = "ubuntu";
 }

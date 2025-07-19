@@ -1,11 +1,17 @@
-package com.k3skvmmaster.model;
+package com.k3skvmmaster.model.dto;
+
+import com.k3skvmmaster.model.common.CommonRequest;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
-public class VmRequest {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class VmRequest extends CommonRequest {
     @NotBlank
     private String name;
 

@@ -17,8 +17,6 @@ public class AutoCloseSshSession implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(AutoCloseSshSession.class);
 
-    private final String baseImagePath = "/k3s-base.qcow2";
-    private final String vmImagesDirectory = "/var/lib/libvirt/images";
     private final String privateKeyPath = "/root/.ssh/id_rsa";
 
     private final Session session;
@@ -95,14 +93,6 @@ public class AutoCloseSshSession implements AutoCloseable {
 
     public ChannelSftp getChannel() {
         return channel;
-    }
-
-    public String getBaseImagePath() {
-        return baseImagePath;
-    }
-
-    public String getVmImagesDirectory() {
-        return vmImagesDirectory;
     }
 
     /**

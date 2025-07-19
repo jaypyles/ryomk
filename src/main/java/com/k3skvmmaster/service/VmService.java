@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.k3skvmmaster.model.VmRequest;
-import com.k3skvmmaster.model.VmResponse;
+import com.k3skvmmaster.model.dto.VmRequest;
+import com.k3skvmmaster.model.rto.VmResponse;
 import com.k3skvmmaster.util.CloudInitUtil;
 import com.k3skvmmaster.util.LibvirtUtil;
 import com.k3skvmmaster.util.SshUtil;

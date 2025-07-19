@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.k3skvmmaster.model.VmRequest;
-import com.k3skvmmaster.model.VmResponse;
+import com.k3skvmmaster.model.dto.VmRequest;
+import com.k3skvmmaster.model.rto.VmResponse;
 import com.k3skvmmaster.service.VmService;
 
 import jakarta.validation.Valid;

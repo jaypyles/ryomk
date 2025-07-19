@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.k3skvmmaster.model.VmRequest;
+import com.k3skvmmaster.model.dto.VmRequest;
 
 @Component
 public class CloudInitUtil {

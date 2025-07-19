@@ -1,10 +1,18 @@
 """Data models for the K3s CLI tool."""
 
 # STL
-from typing import Optional
+from typing import Generic, TypeVar, Optional
 
 # PDM
 from pydantic import Field, BaseModel
+from pydantic.generics import GenericModel
+
+T = TypeVar("T")
+
+
+class CommonResponse(GenericModel, Generic[T]):
+    message: str
+    data: Optional[T]
 
 
 class VMRequest(BaseModel):

@@ -1,5 +1,7 @@
 package com.k3skvmmaster.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.k3skvmmaster.model.common.CommonResponse;
 import com.k3skvmmaster.model.dto.CreateNodeRequest;
 import com.k3skvmmaster.service.K3sService;
 import com.k3skvmmaster.service.VmService;
+import com.k3skvmmaster.util.mapper.KubernetesDataMapper;
+
+import io.kubernetes.client.openapi.models.V1Node;
+import io.kubernetes.client.openapi.models.V1NodeList;
 
 @RestController
 @RequestMapping("/api/v1/clusters")
@@ -28,6 +35,9 @@ public class K3sController {
 
     @Autowired
     private VmService vmService;
+
+    @Autowired
+    private KubernetesDataMapper kMapper;
 
     @GetMapping("/join-token")
     public ResponseEntity<String> getJoinToken() {
@@ -53,33 +63,55 @@ public class K3sController {
         }
     }
 
+    @GetMapping("/nodes")
+    public ResponseEntity<?> getNodes() {
+        try {
+            V1NodeList nodes = k3sService.getNodes();
+            List<V1Node> nodeList = nodes.getItems();
+
+            String message = String.format("Successfully retrieved %d nodes", nodeList.toArray().length);
+
+            return ResponseEntity.ok(new CommonResponse<>(message, kMapper.mapNodesToRto(nodes)));
+        } catch (Exception e) {
+            logger.error("Failed to join cluster: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>("Failed to join cluster: " + e.getMessage(), false));
+        }
+    }
+
     @PutMapping("/node")
     public ResponseEntity<?> createNode(@RequestBody CreateNodeRequest request) {
         logger.info("Recieved node request: {}", request.toString());
-        logger.info("Recieved node request memory: {}", request.getMemory().toString());
-        logger.info("Recieved node request vcpu: {}", request.getVcpu().toString());
 
         try {
             vmService.createVm(request);
             k3sService.joinCluster(request.getIpAddress());
-            return ResponseEntity.ok(true);
+
+            String message = String.format("%s has successfully joined cluster", request.getName());
+            logger.info(message);
+
+            return ResponseEntity.ok(new CommonResponse<>(message, true));
         } catch (Exception e) {
-            logger.error("Failed to get join token: {}", e.getMessage(), e);
+            logger.error("Failed to join cluster: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to get join token: " + e.getMessage());
+                    .body(new CommonResponse<>("Failed to join cluster: " + e.getMessage(), false));
         }
     }
 
     @DeleteMapping("/node")
-    public ResponseEntity<?> deleteNode(@RequestParam String nodeName) {
+    public ResponseEntity<CommonResponse<Boolean>> deleteNode(@RequestParam String nodeName) {
         try {
             k3sService.deleteNode(nodeName);
             vmService.deleteVm(nodeName);
-            return ResponseEntity.ok(true);
+
+            String message = "Node deleted successfully";
+            logger.info(message);
+
+            return ResponseEntity.ok(new CommonResponse<>(message, true));
         } catch (Exception e) {
-            logger.error("Failed to get join token: {}", e.getMessage(), e);
+            logger.error("Failed to delete node: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to get join token: " + e.getMessage());
+                    .body(new CommonResponse<>("Failed to delete node: " + e.getMessage(), false));
         }
     }
 }

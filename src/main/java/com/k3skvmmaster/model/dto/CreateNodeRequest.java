@@ -1,11 +1,11 @@
 package com.k3skvmmaster.model.dto;
 
-import com.k3skvmmaster.model.VmRequest;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class CreateNodeRequest extends VmRequest {
 }

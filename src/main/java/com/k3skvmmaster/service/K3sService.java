@@ -9,6 +9,7 @@ import com.k3skvmmaster.util.K3sUtil;
 
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1NodeList;
 import io.kubernetes.client.util.Config;
 
 @Service
@@ -16,20 +17,20 @@ public class K3sService {
     @Autowired
     private K3sUtil k3sUtil;
 
-    private CoreV1Api coreV1Api;
+    private CoreV1Api client;
 
     public K3sService() throws IOException {
         ApiClient client = Config.defaultClient();
         io.kubernetes.client.openapi.Configuration.setDefaultApiClient(client);
-        this.coreV1Api = new CoreV1Api(client);
+        this.client = new CoreV1Api(client);
     }
 
     public void deletePod(String podName) throws Exception {
-        coreV1Api.deleteNamespacedPod(podName, "default").execute();
+        client.deleteNamespacedPod(podName, "default").execute();
     }
 
     public void deleteNode(String nodeName) throws Exception {
-        coreV1Api.deleteNode(nodeName).execute();
+        client.deleteNode(nodeName).execute();
     }
 
     public String joinCluster(String nodeIp) throws Exception {
@@ -38,5 +39,9 @@ public class K3sService {
 
     public String getJoinToken() throws Exception {
         return k3sUtil.getJoinToken();
+    }
+
+    public V1NodeList getNodes() throws Exception {
+        return client.listNode().execute();
     }
 }

@@ -1,4 +1,4 @@
-package com.k3skvmmaster.model;
+package com.k3skvmmaster.model.rto;
 
 import java.time.LocalDateTime;
 

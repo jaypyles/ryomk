@@ -55,6 +55,10 @@ public class K3sController {
 
     @PutMapping("/node")
     public ResponseEntity<?> createNode(@RequestBody CreateNodeRequest request) {
+        logger.info("Recieved node request: {}", request.toString());
+        logger.info("Recieved node request memory: {}", request.getMemory().toString());
+        logger.info("Recieved node request vcpu: {}", request.getVcpu().toString());
+
         try {
             vmService.createVm(request);
             k3sService.joinCluster(request.getIpAddress());

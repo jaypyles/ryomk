@@ -20,6 +20,10 @@ class VMRequest(BaseModel):
         ..., alias="isoPath", description="Path to cloud-init ISO file"
     )
 
+    # VM Properties
+    vcpu: Optional[int] = Field(1, description="VCPU of the node")
+    memory: Optional[int] = Field(2048, description="Memory of the node")
+
     class Config:
         populate_by_name = True
 
@@ -38,6 +42,10 @@ class NodeRequest(BaseModel):
     iso_path: str = Field(
         ..., alias="isoPath", description="Path to cloud-init ISO file"
     )
+
+    # VM Properties
+    vcpu: Optional[int] = Field(1, description="VCPU of the node")
+    memory: Optional[int] = Field(2048, description="Memory of the node")
 
     class Config:
         populate_by_name = True

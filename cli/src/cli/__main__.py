@@ -44,12 +44,16 @@ def vm() -> None:
 @click.option("--gateway", required=True, help="Gateway IP address")
 @click.option("--system-user", required=True, help="System user for the VM")
 @click.option("--iso-path", required=True, help="Path to cloud-init ISO file")
+@click.option("--vcpu", required=False, help="VCPU amount (1, 2, etc.)")
+@click.option("--memory", required=False, help="Memory (in mb) ex: 2048")
 def create_vm(
     name: str,
     ip_address: str,
     gateway: str,
     system_user: str,
     iso_path: str,
+    vcpu: int,
+    memory: int,
 ) -> None:
     """Create a new VM."""
     ctx = click.get_current_context()
@@ -62,6 +66,8 @@ def create_vm(
             gateway=gateway,
             system_user=system_user,
             iso_path=iso_path,
+            vcpu=vcpu,
+            memory=memory,
         )
 
         result = client.create_vm(vm_data)
@@ -117,12 +123,16 @@ def cluster() -> None:
 @click.option("--gateway", required=True, help="Gateway IP address")
 @click.option("--system-user", required=True, help="System user for the VM")
 @click.option("--iso-path", required=True, help="Path to cloud-init ISO file")
+@click.option("--vcpu", required=False, help="VCPU amount (1, 2, etc.)")
+@click.option("--memory", required=False, help="Memory (in mb) ex: 2048")
 def create_vm(
     name: str,
     ip_address: str,
     gateway: str,
     system_user: str,
     iso_path: str,
+    vcpu: int,
+    memory: int,
 ) -> None:
     """Create a new VM."""
     ctx = click.get_current_context()
@@ -135,6 +145,8 @@ def create_vm(
             gateway=gateway,
             system_user=system_user,
             iso_path=iso_path,
+            vcpu=vcpu,
+            memory=memory,
         )
 
         result = client.create_node(node_data)

@@ -24,9 +24,6 @@ public class LibvirtConfig {
     @Value("${vm.images.directory}")
     private String vmImagesDirectory;
 
-    @Value("${ssh.private.key.path}")
-    private String privateKeyPath;
-
     @Bean
     public Connect libvirtConnect() throws Exception {
         logger.info("Attempting to connect to libvirt at: {}", libvirtUri);

@@ -8,5 +8,4 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CreateNodeRequest extends VmRequest {
-    private String k3sRole;
 }

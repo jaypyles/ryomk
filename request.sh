@@ -36,6 +36,8 @@ elif [ "$1" = "6" ]; then
     --ip-address "192.168.50.89" \
     --gateway "192.168.50.1" \
     --system-user "jayden" \
+    --vcpu 2 \
+    --memory 4096 \
     --iso-path "/home/jayden/cloud-init/k3s-worker-4-cloud-init.iso"
 
 elif [ "$1" = "7" ]; then

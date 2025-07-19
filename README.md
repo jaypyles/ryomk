@@ -144,30 +144,9 @@ pdm run python -m ryomk
 make # show all available commands
 ```
 
-## 🔍 API Documentation
-
-Once the backend is running, you can access:
-
-- **Swagger UI**: http://localhost:8080/swagger-ui.html
-- **Health Check**: http://localhost:8080/actuator/health
-- **API Info**: http://localhost:8080/actuator/info
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🆘 Support
 
 For issues and questions:
 - Check the API documentation at `/swagger-ui.html`
-- Review the CLI help with `k3s-cli --help`
+- Review the CLI help with `pdm run ryomk --help`
 - Check the logs with `make logs`

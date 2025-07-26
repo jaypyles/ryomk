@@ -11,6 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+    #   - name: Setup dependencies
+    #     run: |
+    #         mvn -N io.takari:maven:wrapper
+    #     shell: bash
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:

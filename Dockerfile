@@ -17,17 +17,12 @@ RUN apt update -y && apt install -y \
 WORKDIR /app
 
 # Copy Maven wrapper and pom files first (dependency info)
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
-
-# Download dependencies (cached if pom.xml unchanged)
-RUN ./mvnw dependency:go-offline
 
 # Now copy the rest of the source code
 COPY src src
 
 # Build the package skipping tests
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
-CMD ["./mvnw", "spring-boot:run"]
+CMD ["mvn", "spring-boot:run"]

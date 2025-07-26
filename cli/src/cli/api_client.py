@@ -142,3 +142,15 @@ class K3sAPIClient:
             "DELETE", f"/api/v1/clusters/node?nodeName={node_name}"
         )
         return response.json()
+
+    def get_nodes(self) -> Dict[str, Any]:
+        """Get all nodes
+
+        Args:
+            node_name: Name of the Node to delete
+
+        Returns:
+            API response data
+        """
+        response = self._make_request("GET", f"/api/v1/clusters/nodes")
+        return response.json()

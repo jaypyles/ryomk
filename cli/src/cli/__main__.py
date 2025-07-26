@@ -205,6 +205,22 @@ def delete_node(name: str) -> None:
         raise click.Abort()
 
 
+@cluster.command("list")
+def list_nodes() -> None:
+    """List all nodes."""
+    ctx = click.get_current_context()
+    client: K3sAPIClient = ctx.obj["client"]
+
+    try:
+        result = client.get_nodes()
+        print_json(result)
+        click.echo("✅ Nodes retrieved successfully")
+
+    except Exception as e:
+        click.echo(f"❌ Failed to delete Node: {e}", err=True)
+        raise click.Abort()
+
+
 def main() -> None:
     """Main entry point for the CLI."""
     cli()

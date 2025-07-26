@@ -26,7 +26,7 @@ exclude = [".venv"]
 package = true
 
 # Type checking strictness
-typeCheckingMode = "strict"
+typeCheckingMode = "strict"                        # Enables strict type checking mode
 reportPrivateUsage = "error"
 reportMissingTypeStubs = "error"
 reportUntypedFunctionDecorator = "error"
@@ -57,7 +57,7 @@ reportInvalidStubStatement = "error"
 reportInconsistentOverload = "error"
 
 # Misc settings
-pythonVersion = "3.12"
+pythonVersion = "3.12"            # Matches your Python version from pyproject.toml
 strictListInference = true
 strictDictionaryInference = true
 strictSetInference = true

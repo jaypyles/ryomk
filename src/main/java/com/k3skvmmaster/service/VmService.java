@@ -1,7 +1,6 @@
 package com.k3skvmmaster.service;
 
-import java.util.List;
-
+import org.libvirt.Connect;
 import org.libvirt.Domain;
 import org.libvirt.LibvirtException;
 import org.slf4j.Logger;
@@ -41,37 +40,28 @@ public class VmService {
         String domainXml = libvirtUtil.generateDomainXml(request, cloudInitIsoPath);
 
         // 4. Define and start VM
-        Domain domain = libvirtUtil.defineAndStartDomain(domainXml);
+        Connect conn = libvirtUtil.createLibvirtConnection(request.getLibvirtUri());
+        Domain domain = libvirtUtil.defineAndStartDomain(domainXml, conn);
+
+        conn.close();
 
         // 5. Wait for VM to be ready
         libvirtUtil.waitForVmReady(request.getIpAddress(), 22, 300);
 
+        if (request.getInstallNfsDeps()) {
+            sshUtil.downloadNfsDependencies(request.getUser(), request.getIpAddress());
+        }
+
         return buildVmResponse(domain);
     }
 
-    public List<VmResponse> getAllVms() {
+    public void deleteVm(String vmName, String libvirtUri) {
         try {
-            return libvirtUtil.getAllDomains().stream()
-                    .map(this::buildVmResponse)
-                    .toList();
-        } catch (LibvirtException e) {
-            throw new RuntimeException(e);
-        }
-    }
+            Connect conn = libvirtUtil.createLibvirtConnection(libvirtUri);
 
-    public VmResponse getVm(String vmName) {
-        try {
-            Domain domain = libvirtUtil.getDomainByName(vmName);
-            return buildVmResponse(domain);
-        } catch (LibvirtException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void deleteVm(String vmName) {
-        try {
             // Delete the VM domain
-            libvirtUtil.deleteDomain(vmName);
+            libvirtUtil.deleteDomain(vmName, conn);
+            conn.close();
 
             // Clean up the disk image
             logger.info("Cleaning up disk image for VM: {}", vmName);
@@ -79,23 +69,6 @@ public class VmService {
 
         } catch (Exception e) {
             logger.error("Error deleting VM {}: {}", vmName, e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void startVm(String vmName) {
-
-        try {
-            libvirtUtil.startDomain(vmName);
-        } catch (LibvirtException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void stopVm(String vmName) {
-        try {
-            libvirtUtil.shutdownDomain(vmName);
-        } catch (LibvirtException e) {
             throw new RuntimeException(e);
         }
     }

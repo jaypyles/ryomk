@@ -206,4 +206,23 @@ public class SshUtil {
             throw new IOException("Failed to create remote ISO", e);
         }
     }
+
+    public Boolean downloadNfsDependencies(String user, String host) throws IOException {
+        try (AutoCloseSshSession ssh = new AutoCloseSshSession(user, host)) {
+            String command = "sudo add-apt-repository universe -y && sudo apt update && sudo apt install -y nfs-common";
+            AutoCloseSshSession.SshCommandResult result = ssh.executeSshCommand(command, "NFS Dependency Install");
+
+            if (!result.isSuccess()) {
+                throw new IOException("Failed to create install nfs dependencies, exit code: " + result.getExitCode());
+            }
+
+            logger.info("NFS dependencies downloadded.");
+            return true;
+
+        } catch (JSchException e) {
+            logger.error("Failed to create remote ISO: {}", e.getMessage(), e);
+            throw new IOException("Failed to create remote ISO", e);
+        }
+
+    }
 }

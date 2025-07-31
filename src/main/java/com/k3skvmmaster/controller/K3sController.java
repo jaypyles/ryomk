@@ -99,10 +99,11 @@ public class K3sController {
     }
 
     @DeleteMapping("/node")
-    public ResponseEntity<CommonResponse<Boolean>> deleteNode(@RequestParam String nodeName) {
+    public ResponseEntity<CommonResponse<Boolean>> deleteNode(@RequestParam String nodeName,
+            @RequestParam(required = false) String libvirtUri) {
         try {
             k3sService.deleteNode(nodeName);
-            vmService.deleteVm(nodeName);
+            vmService.deleteVm(nodeName, libvirtUri);
 
             String message = "Node deleted successfully";
             logger.info(message);

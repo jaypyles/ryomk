@@ -31,8 +31,8 @@ elif [ "$1" = "5" ]; then
 elif [ "$1" = "6" ]; then
   echo "Creating node..."
   pdm run ryomk cluster create \
-    --name "k3s-worker-4" \
-    --ip-address "192.168.50.89" \
+    --name "k3s-worker-ooooo" \
+    --ip-address "192.168.50.91" \
     --gateway "192.168.50.1" \
     --system-user "jayden" \
     --vcpu 2 \
@@ -41,7 +41,18 @@ elif [ "$1" = "6" ]; then
 
 elif [ "$1" = "7" ]; then
   echo "Deleting node..."
-  pdm run ryomk cluster delete k3s-worker-4
+  pdm run ryomk cluster delete k3s-worker-ooooo
+
+elif [ "$1" = "8" ]; then
+  echo "Creating node..."
+  pdm run ryomk --base-url=http://192.168.50.34:30001 cluster create \
+    --name "k3s-worker-4" \
+    --ip-address "192.168.50.89" \
+    --gateway "192.168.50.1" \
+    --system-user "jayden" \
+    --vcpu 2 \
+    --memory 4096 \
+    --iso-path "/home/%s/cloud-init/%s-cloud-init.iso"
 
 else
   echo "Usage: $0 [1|2|3|4|5|6|7]"

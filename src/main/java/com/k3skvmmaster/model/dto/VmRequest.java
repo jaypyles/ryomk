@@ -35,4 +35,7 @@ public class VmRequest extends CommonRequest {
 
     private String rootPassword = "ubuntu";
     private String user = "ubuntu";
+
+    private String libvirtUri;
+    private Boolean installNfsDeps = true;
 }
